@@ -60,4 +60,11 @@ public class CampaignRestController {
     campaignService.updateCampaign(campaignId, campaign);
     return new ResponseEntity<>(campaign, HttpStatus.OK);
   }
+
+  @DeleteMapping(value = "/{campaignId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public ResponseEntity<Campaign> destroy(@PathVariable Long campaignId) {
+    campaignService.deleteCampaign(campaignId);
+    return ResponseEntity.noContent().build();
+  }
 }

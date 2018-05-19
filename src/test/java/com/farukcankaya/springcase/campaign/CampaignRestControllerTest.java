@@ -481,4 +481,47 @@ public class CampaignRestControllerTest {
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     assertEquals(responseContent, response.getContentAsString());
   }
+
+  // destory
+  @Test
+  public void givenNonExistingCampaignId_whenDestroyInvoked_thenReturn404WithInformation()
+          throws Exception {
+    // G
+    long campaignId = 1;
+    NotFoundException notFoundException = new NotFoundException(Campaign.class);
+    String responseContent = "{\"messages\":[\"Campaign is not found\"]}";
+
+    // W
+    when(mockCampaignService.deleteCampaign(campaignId)).thenThrow(notFoundException);
+
+    // T
+    RequestBuilder requestBuilder =
+            MockMvcRequestBuilders.delete("/campaigns/" + campaignId).accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
+
+  @Test
+  public void givenExistingCampaignId_whenDestroyInvoked_thenReturn204NoContent() throws Exception {
+    // G
+    long campaignId = 1;
+    String responseContent = "";
+
+    // W
+    when(mockCampaignService.deleteCampaign(campaignId)).thenReturn(true);
+
+    // T
+    RequestBuilder requestBuilder =
+            MockMvcRequestBuilders.delete("/campaigns/" + campaignId)
+                    .accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
+
 }

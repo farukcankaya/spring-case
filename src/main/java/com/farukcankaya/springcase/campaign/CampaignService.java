@@ -51,6 +51,14 @@ public class CampaignService {
     return campaignRepository.save(campaign);
   }
 
+  public synchronized boolean deleteCampaign(Long campaignId) {
+    campaignRepository
+        .findById(campaignId)
+        .orElseThrow(() -> new NotFoundException(Campaign.class));
+    campaignRepository.deleteById(campaignId);
+    return true;
+  }
+
   private void validate(Campaign campaign) {
     if (campaign.getDiscountType().equals(DiscountType.RATE)) {
       if (campaign.getMaximumDiscountPrice() == null) {

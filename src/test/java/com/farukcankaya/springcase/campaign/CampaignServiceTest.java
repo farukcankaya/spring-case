@@ -254,4 +254,24 @@ public class CampaignServiceTest {
 
     campaignService.updateCampaign(productCampaign.getId(), productCampaign);
   }
+
+  // #deleteCampaign
+  @Test(expected = NotFoundException.class)
+  public void givenNonExistingCampaignId_whenDeleteCampaign_thenThowNotFoundException() {
+    Campaign campaign = TestUtils.getRandomCampaigns(1).get(0);
+
+    when(campaignRepositoryMock.findById(campaign.getId())).thenReturn(Optional.empty());
+
+    campaignService.deleteCampaign(campaign.getId());
+  }
+  @Test
+  public void givenExistingCampaignId_whenDeleteCampaign_thenThowNotFoundException() {
+    Campaign campaign = TestUtils.getRandomCampaigns(1).get(0);
+
+    when(campaignRepositoryMock.findById(campaign.getId())).thenReturn(Optional.of(campaign));
+
+    assertThat(campaignService.deleteCampaign(campaign.getId())).isTrue();
+  }
+
+
 }
