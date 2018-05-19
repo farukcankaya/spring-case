@@ -4,8 +4,10 @@ import com.farukcankaya.springcase.campaign.entity.Campaign;
 import com.farukcankaya.springcase.campaign.entity.CategoryCampaign;
 import com.farukcankaya.springcase.campaign.entity.DiscountType;
 import com.farukcankaya.springcase.campaign.entity.ProductCampaign;
+import com.farukcankaya.springcase.common.Constants;
 import com.farukcankaya.springcase.common.MissingParameterException;
 import com.farukcankaya.springcase.common.NotFoundException;
+import com.farukcankaya.springcase.common.WrongValueException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -332,6 +334,36 @@ public class CampaignRestControllerTest {
     String responseContent =
         "{\"messages\":[\"maximumDiscountPrice must not be empty for campaign which has discount in RATE type.\"]}";
     MissingParameterException exception = new MissingParameterException("maximumDiscountPrice");
+
+    // W
+    when(mockCampaignService.addCampaign(Mockito.any())).thenThrow(exception);
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/campaigns")
+            .content(requestPayload)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
+
+  @Test
+  public void
+      givenRateCampaignWithWrongDiscountValue_whenAddCampaignInvoked_thenReturnBadRequestError()
+          throws Exception {
+    // G
+    String requestPayload =
+        "{ \"type\": \"product\", \"name\": \"Product Campaign\", \"discountType\":\"RATE\", \"discountValue\": 100.01, \"maximumDiscountPrice\": 80, \"productId\": 1, \"productName\": \"Product #1\" }";
+    String responseContent =
+        "{\"messages\":[\"discountValue must be less than or equal to "
+            + Constants.MAXIMUM_DISCOUNT_VALUE
+            + "\"]}";
+    WrongValueException exception =
+        new WrongValueException("discountValue", Constants.MAXIMUM_DISCOUNT_VALUE);
 
     // W
     when(mockCampaignService.addCampaign(Mockito.any())).thenThrow(exception);

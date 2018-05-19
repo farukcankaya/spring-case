@@ -6,6 +6,7 @@ import com.farukcankaya.springcase.campaign.entity.DiscountType;
 import com.farukcankaya.springcase.campaign.entity.ProductCampaign;
 import com.farukcankaya.springcase.common.MissingParameterException;
 import com.farukcankaya.springcase.common.NotFoundException;
+import com.farukcankaya.springcase.common.WrongValueException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -116,5 +117,21 @@ public class CampaignServiceTest {
     when(campaignRepositoryMock.save(campaign)).thenReturn(savedCampaign);
 
     assertThat(campaignService.addCampaign(campaign)).isEqualTo(savedCampaign);
+  }
+
+  @Test(expected = WrongValueException.class)
+  public void
+      givenRateCampaignWrongMaximumDiscountPrice_whenAddCampaign_thenThrowWrongValueException() {
+    Campaign campaign =
+        new ProductCampaign(
+            null,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(100.01),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+
+    campaignService.addCampaign(campaign);
   }
 }

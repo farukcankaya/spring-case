@@ -35,6 +35,12 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(WrongValueException.class)
+  public final ResponseEntity<ErrorResponse> handleWrongValueException(WrongValueException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(Exception.class)
   public final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
     ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
