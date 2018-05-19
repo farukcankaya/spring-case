@@ -2,7 +2,7 @@
 
 ## TODO
 - [ ] **Expectations**
-  - [ ] Campaign CRUD create/update/delete
+  - [x] Campaign CRUD create/update/delete
   - [ ] Discount calculation
   - [ ] Swagger integration
 - [ ] **Bonus**
