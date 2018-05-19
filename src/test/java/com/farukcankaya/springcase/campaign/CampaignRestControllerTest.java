@@ -380,4 +380,105 @@ public class CampaignRestControllerTest {
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     assertEquals(responseContent, response.getContentAsString());
   }
+
+  // PATCH campaigns
+  @Test
+  public void givenCampaignJson_whenUpdateCampaignInvoked_thenReturnCampaignJson()
+      throws Exception {
+    // G
+    Campaign savedCampaign =
+        new ProductCampaign(
+            1L,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    String requestPayload =
+        "{ \"id\": 1, \"type\": \"product\", \"name\": \"Product Campaign\", \"discountType\":\"RATE\", \"discountValue\": 10, \"maximumDiscountPrice\": 80, \"productId\": 1, \"productName\": \"Product #1\" }";
+    String responseContent = mapper.writeValueAsString(savedCampaign);
+
+    // W
+    Mockito.when(mockCampaignService.updateCampaign(Mockito.any(), Mockito.any()))
+        .thenReturn(savedCampaign);
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.put("/campaigns/" + savedCampaign.getId().longValue())
+            .content(requestPayload)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.OK.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
+
+  @Test
+  public void
+      givenCampaignWithNullCampaignType_whenUpdateCampaignInvoked_thenReturnBadRequestError()
+          throws Exception {
+    // G
+    Campaign savedCampaign =
+        new ProductCampaign(
+            1L,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    String requestPayload =
+        "{ \"id\": 1, \"name\": \"Product Campaign\", \"discountType\":\"RATE\", \"discountValue\": 10, \"maximumDiscountPrice\": 80, \"productId\": 1, \"productName\": \"Product #1\" }";
+    String responseContent = mapper.writeValueAsString(savedCampaign);
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.put("/campaigns/" + 1)
+            .content(requestPayload)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+  }
+
+  @Test
+  public void
+      givenCampaignWithDifferentCampaignType_whenUpdateCampaignInvoked_thenReturnBadRequestError()
+          throws Exception {
+
+    // G
+    ProductCampaign productCampaign =
+        new ProductCampaign(
+            1L,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    CampaignTypeMismatchException exception = new CampaignTypeMismatchException();
+    String requestPayload =
+        "{ \"id\": 1, \"type\": \"category\", \"name\": \"Product Campaign\", \"discountType\":\"RATE\", \"discountValue\": 10, \"maximumDiscountPrice\": 80, \"categoryId\": 1, \"categoryName\": \"Category #1\" }";
+    String responseContent = "{\"messages\":[\"Campaign type cannot be changed\"]}";
+
+    // W
+    when(mockCampaignService.updateCampaign(Mockito.anyLong(), Mockito.any())).thenThrow(exception);
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.put("/campaigns/" + productCampaign.getId().longValue())
+            .content(requestPayload)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
 }

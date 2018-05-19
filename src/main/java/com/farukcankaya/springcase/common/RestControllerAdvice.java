@@ -1,5 +1,6 @@
 package com.farukcankaya.springcase.common;
 
+import com.farukcankaya.springcase.campaign.CampaignTypeMismatchException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,13 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(WrongValueException.class)
   public final ResponseEntity<ErrorResponse> handleWrongValueException(WrongValueException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(CampaignTypeMismatchException.class)
+  public final ResponseEntity<ErrorResponse> handleCampaignTypeMismatchException(
+      CampaignTypeMismatchException ex) {
     ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }

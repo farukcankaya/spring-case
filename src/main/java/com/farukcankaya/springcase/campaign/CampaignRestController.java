@@ -49,4 +49,15 @@ public class CampaignRestController {
 
     return new ResponseEntity<>(savedCampaign, HttpStatus.CREATED);
   }
+
+  @PutMapping(
+    value = "/{campaignId}",
+    consumes = {MediaType.APPLICATION_JSON_VALUE}
+  )
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<Campaign> update(
+      @PathVariable Long campaignId, @Valid @RequestBody Campaign campaign) {
+    campaignService.updateCampaign(campaignId, campaign);
+    return new ResponseEntity<>(campaign, HttpStatus.OK);
+  }
 }

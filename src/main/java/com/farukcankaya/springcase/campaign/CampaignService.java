@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CampaignService {
@@ -32,6 +33,25 @@ public class CampaignService {
   }
 
   public synchronized Campaign addCampaign(Campaign campaign) {
+    validate(campaign);
+    return campaignRepository.save(campaign);
+  }
+
+  public synchronized Campaign updateCampaign(Long campaignId, Campaign campaign) {
+    validate(campaign);
+
+    campaign.setId(campaignId);
+    Optional<Campaign> optionalCampaign = campaignRepository.findById(campaignId);
+    optionalCampaign.orElseThrow(() -> new NotFoundException(Campaign.class));
+
+    if (!optionalCampaign.get().getClass().equals(campaign.getClass())) {
+      throw new CampaignTypeMismatchException();
+    }
+
+    return campaignRepository.save(campaign);
+  }
+
+  private void validate(Campaign campaign) {
     if (campaign.getDiscountType().equals(DiscountType.RATE)) {
       if (campaign.getMaximumDiscountPrice() == null) {
         throw new MissingParameterException("maximumDiscountPrice");
@@ -41,7 +61,5 @@ public class CampaignService {
         throw new WrongValueException("maximumDiscountPrice", Constants.MAXIMUM_DISCOUNT_VALUE);
       }
     }
-
-    return campaignRepository.save(campaign);
   }
 }
