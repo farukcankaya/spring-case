@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +37,25 @@ public class CampaignRestControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockBean private CampaignService mockCampaignService;
+
+  @Test
+  public void givenEmptyList_whenCampaignsInvoked_thenReturnEmptyJsonArray() throws Exception {
+    // G
+    List<Campaign> campaignList = new ArrayList<>(0);
+    String responseContent = "{\"items\":[]}";
+
+    // W
+    when(mockCampaignService.getAllCampaigns()).thenReturn(campaignList);
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/campaigns").accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.OK.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
 
   @Test
   public void givenCampaignList_whenCampaignsInvoked_thenReturnCampaignListJsonArray()
