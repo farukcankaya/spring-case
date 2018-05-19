@@ -1,6 +1,7 @@
 package com.farukcankaya.springcase.campaign;
 
 import com.farukcankaya.springcase.campaign.entity.Campaign;
+import com.farukcankaya.springcase.common.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,9 @@ public class CampaignService {
     List<Campaign> list = new ArrayList<>();
     this.campaignRepository.findAll().forEach(campaign -> list.add(campaign));
     return list;
+  }
+
+  public Campaign getCampaignById(Long id) {
+    return null;
   }
 }
