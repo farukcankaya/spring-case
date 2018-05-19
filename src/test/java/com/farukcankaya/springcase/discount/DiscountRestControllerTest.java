@@ -57,7 +57,7 @@ public class DiscountRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/calculateDiscounts")
+        MockMvcRequestBuilders.post("/v1/calculateDiscounts")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);

@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/campaigns")
+@RequestMapping("/v1/campaigns")
 public class CampaignRestController {
 
   private CampaignService campaignService;

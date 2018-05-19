@@ -53,7 +53,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.get("/campaigns").accept(MediaType.APPLICATION_JSON);
+        MockMvcRequestBuilders.get("/v1/campaigns").accept(MediaType.APPLICATION_JSON);
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
     MockHttpServletResponse response = result.getResponse();
 
@@ -92,7 +92,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.get("/campaigns").accept(MediaType.APPLICATION_JSON);
+        MockMvcRequestBuilders.get("/v1/campaigns").accept(MediaType.APPLICATION_JSON);
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
     MockHttpServletResponse response = result.getResponse();
 
@@ -114,7 +114,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.get("/campaigns/" + campaignId).accept(MediaType.APPLICATION_JSON);
+        MockMvcRequestBuilders.get("/v1/campaigns/" + campaignId).accept(MediaType.APPLICATION_JSON);
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
     MockHttpServletResponse response = result.getResponse();
 
@@ -142,7 +142,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.get("/campaigns/" + productCampaign.getId())
+        MockMvcRequestBuilders.get("/v1/campaigns/" + productCampaign.getId())
             .accept(MediaType.APPLICATION_JSON);
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
     MockHttpServletResponse response = result.getResponse();
@@ -173,7 +173,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -192,7 +192,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -210,7 +210,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -230,7 +230,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -251,7 +251,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -272,7 +272,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -293,7 +293,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -314,7 +314,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -341,7 +341,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -371,7 +371,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/campaigns")
+        MockMvcRequestBuilders.post("/v1/campaigns")
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -406,7 +406,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.put("/campaigns/" + savedCampaign.getId().longValue())
+        MockMvcRequestBuilders.put("/v1/campaigns/" + savedCampaign.getId().longValue())
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -437,7 +437,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.put("/campaigns/" + 1)
+        MockMvcRequestBuilders.put("/v1/campaigns/" + 1)
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -472,7 +472,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-        MockMvcRequestBuilders.put("/campaigns/" + productCampaign.getId().longValue())
+        MockMvcRequestBuilders.put("/v1/campaigns/" + productCampaign.getId().longValue())
             .content(requestPayload)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
@@ -497,7 +497,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.delete("/campaigns/" + campaignId).accept(MediaType.APPLICATION_JSON);
+            MockMvcRequestBuilders.delete("/v1/campaigns/" + campaignId).accept(MediaType.APPLICATION_JSON);
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
     MockHttpServletResponse response = result.getResponse();
 
@@ -516,7 +516,7 @@ public class CampaignRestControllerTest {
 
     // T
     RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.delete("/campaigns/" + campaignId)
+            MockMvcRequestBuilders.delete("/v1/campaigns/" + campaignId)
                     .accept(MediaType.APPLICATION_JSON);
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
     MockHttpServletResponse response = result.getResponse();
