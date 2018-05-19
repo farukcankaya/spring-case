@@ -2,7 +2,6 @@ package com.farukcankaya.springcase.campaign;
 
 import com.farukcankaya.springcase.TestUtils;
 import com.farukcankaya.springcase.campaign.entity.Campaign;
-import com.farukcankaya.springcase.campaign.entity.CategoryCampaign;
 import com.farukcankaya.springcase.campaign.entity.DiscountType;
 import com.farukcankaya.springcase.campaign.entity.ProductCampaign;
 import com.farukcankaya.springcase.common.NotFoundException;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +49,30 @@ public class CampaignServiceTest {
     when(campaignRepositoryMock.findById(campaign.getId())).thenReturn(Optional.of(campaign));
 
     assertThat(campaignService.getCampaignById(campaign.getId())).isEqualTo(campaign);
+  }
+
+  @Test
+  public void givenCampaign_whenAddCampaign_thenReturnCampaign() {
+    Campaign campaign =
+        new ProductCampaign(
+            null,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    Campaign savedCampaign =
+        new ProductCampaign(
+            1L,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    when(campaignRepositoryMock.save(campaign)).thenReturn(savedCampaign);
+
+    assertThat(campaignService.addCampaign(campaign)).isEqualTo(savedCampaign);
   }
 }

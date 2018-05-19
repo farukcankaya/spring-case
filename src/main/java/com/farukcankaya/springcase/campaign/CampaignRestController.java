@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -38,5 +39,12 @@ public class CampaignRestController {
     Campaign campaign = this.campaignService.getCampaignById(campaignId);
 
     return new ResponseEntity<>(campaign, HttpStatus.OK);
+  }
+
+  @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<Campaign> create(@Valid @RequestBody Campaign campaign) {
+    Campaign savedCampaign = campaignService.addCampaign(campaign);
+    return new ResponseEntity<>(savedCampaign, HttpStatus.CREATED);
   }
 }

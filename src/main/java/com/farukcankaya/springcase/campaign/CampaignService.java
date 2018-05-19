@@ -24,8 +24,10 @@ public class CampaignService {
   }
 
   public Campaign getCampaignById(Long id) {
-    return campaignRepository
-        .findById(id)
-        .orElseThrow(() -> new NotFoundException(Campaign.class));
+    return campaignRepository.findById(id).orElseThrow(() -> new NotFoundException(Campaign.class));
+  }
+
+  public synchronized Campaign addCampaign(Campaign campaign) {
+    return campaignRepository.save(campaign);
   }
 }
