@@ -4,7 +4,7 @@
 - [ ] **Expectations**
   - [x] Campaign CRUD create/update/delete
   - [x] Discount calculation
-  - [ ] Swagger integration
+  - [x] Swagger integration (!)
 - [ ] **Bonus**
   - [ ] Admin panel to manage campaign
   - [ ] Dockerize application
