@@ -61,28 +61,7 @@ public class CampaignRestControllerTest {
             "Category #1");
     List<Campaign> campaignList = Arrays.asList(productCampaign, categoryCampaign);
     String responseContent =
-        "{\n"
-            + "    \"items\": [\n"
-            + "        {\n"
-            + "            \"id\": 1,\n"
-            + "            \"name\": \"Product Campaign\",\n"
-            + "            \"discountType\": \"RATE\",\n"
-            + "            \"discountValue\": 10,\n"
-            + "            \"maximumDiscountPrice\": 80,\n"
-            + "            \"productId\": 1,\n"
-            + "            \"productName\": \"Product #1\"\n"
-            + "        },\n"
-            + "        {\n"
-            + "            \"id\": 2,\n"
-            + "            \"name\": \"Category Campaign\",\n"
-            + "            \"discountType\": \"PRICE\",\n"
-            + "            \"discountValue\": 50,\n"
-            + "            \"maximumDiscountPrice\": null,\n"
-            + "            \"categoryId\": 1,\n"
-            + "            \"categoryName\": \"Category #1\"\n"
-            + "        }\n"
-            + "    ]\n"
-            + "}";
+        "{\"items\":[{\"id\":1,\"name\":\"Product Campaign\",\"discountType\":\"RATE\",\"discountValue\":10,\"maximumDiscountPrice\":80,\"productId\":1,\"productName\":\"Product #1\"},{\"id\":2,\"name\":\"Category Campaign\",\"discountType\":\"PRICE\",\"discountValue\":50,\"maximumDiscountPrice\":null,\"categoryId\":1,\"categoryName\":\"Category #1\"}]}";
 
     // W
     when(mockCampaignService.getAllCampaigns()).thenReturn(campaignList);
