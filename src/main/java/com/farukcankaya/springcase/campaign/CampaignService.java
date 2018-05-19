@@ -24,6 +24,6 @@ public class CampaignService {
   }
 
   public Campaign getCampaignById(Long id) {
-    return null;
+    return campaignRepository.findById(id).orElseThrow(() -> new NotFoundException(Campaign.class));
   }
 }
