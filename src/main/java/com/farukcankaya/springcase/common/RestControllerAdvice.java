@@ -21,10 +21,24 @@ import java.util.stream.Stream;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestControllerAdvice extends ResponseEntityExceptionHandler {
+
   @ExceptionHandler(NotFoundException.class)
-  public final ResponseEntity<ErrorResponse> handleNotFoundExceptionHandler(NotFoundException ex) {
+  public final ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
     ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(MissingParameterException.class)
+  public final ResponseEntity<ErrorResponse> handleMissingParameterException(
+      MissingParameterException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
+    ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
+    return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Override
@@ -45,12 +59,6 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
       WebRequest request) {
     List errors = prepareMethodArgumentNotValidErrors(ex.getBindingResult());
     return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
-  }
-
-  @ExceptionHandler(Exception.class)
-  public final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
-    ErrorResponse errorResponse = new ErrorResponse(Collections.singletonList(ex.getMessage()));
-    return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   private List<String> prepareMethodArgumentNotValidErrors(BindingResult bindingResult) {

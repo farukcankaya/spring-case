@@ -2,6 +2,7 @@ package com.farukcankaya.springcase.campaign;
 
 import com.farukcankaya.springcase.campaign.entity.Campaign;
 import com.farukcankaya.springcase.common.ListResponse;
+import com.farukcankaya.springcase.common.MissingParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,6 +46,7 @@ public class CampaignRestController {
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<Campaign> create(@Valid @RequestBody Campaign campaign) {
     Campaign savedCampaign = campaignService.addCampaign(campaign);
+
     return new ResponseEntity<>(savedCampaign, HttpStatus.CREATED);
   }
 }

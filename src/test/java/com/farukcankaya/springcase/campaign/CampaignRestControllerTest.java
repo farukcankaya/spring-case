@@ -4,6 +4,7 @@ import com.farukcankaya.springcase.campaign.entity.Campaign;
 import com.farukcankaya.springcase.campaign.entity.CategoryCampaign;
 import com.farukcankaya.springcase.campaign.entity.DiscountType;
 import com.farukcankaya.springcase.campaign.entity.ProductCampaign;
+import com.farukcankaya.springcase.common.MissingParameterException;
 import com.farukcankaya.springcase.common.NotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -37,6 +38,7 @@ public class CampaignRestControllerTest {
 
   @MockBean private CampaignService mockCampaignService;
 
+  // GET /campaigns
   @Test
   public void givenEmptyList_whenCampaignsInvoked_thenReturnEmptyJsonArray() throws Exception {
     // G
@@ -95,6 +97,7 @@ public class CampaignRestControllerTest {
     assertEquals(responseContent, response.getContentAsString());
   }
 
+  // GET /campaigns/:id
   @Test
   public void givenEmptyCampaign_whenCampaignsByIdInvoked_thenReturn404WithInformation()
       throws Exception {
@@ -145,6 +148,7 @@ public class CampaignRestControllerTest {
     assertEquals(responseContent, response.getContentAsString());
   }
 
+  // POST campaigns
   @Test
   public void givenCampaignJson_whenAddCampaignInvoked_thenReturnCampaignJson() throws Exception {
     // G
@@ -304,6 +308,33 @@ public class CampaignRestControllerTest {
     String requestPayload =
         "{ \"type\": \"product\", \"name\": \"Product Campaign\", \"discountType\":\"RATE\", \"discountValue\": 10, \"maximumDiscountPrice\": 80, \"productId\": 1 }";
     String responseContent = "{\"messages\":[\"productName must not be empty but null is sent\"]}";
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/campaigns")
+            .content(requestPayload)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
+
+  @Test
+  public void
+      givenRateCampaignWithMissingMaximumDiscountValue_whenAddCampaignInvoked_thenReturnBadRequestError()
+          throws Exception {
+    // G
+    String requestPayload =
+        "{ \"type\": \"product\", \"name\": \"Product Campaign\", \"discountType\":\"RATE\", \"discountValue\": 10, \"productId\": 1, \"productName\": \"Product #1\" }";
+    String responseContent =
+        "{\"messages\":[\"maximumDiscountPrice must not be empty for campaign which has discount in RATE type.\"]}";
+    MissingParameterException exception = new MissingParameterException("maximumDiscountPrice");
+
+    // W
+    when(mockCampaignService.addCampaign(Mockito.any())).thenThrow(exception);
 
     // T
     RequestBuilder requestBuilder =

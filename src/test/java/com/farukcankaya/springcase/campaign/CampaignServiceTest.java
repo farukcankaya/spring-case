@@ -4,6 +4,7 @@ import com.farukcankaya.springcase.TestUtils;
 import com.farukcankaya.springcase.campaign.entity.Campaign;
 import com.farukcankaya.springcase.campaign.entity.DiscountType;
 import com.farukcankaya.springcase.campaign.entity.ProductCampaign;
+import com.farukcankaya.springcase.common.MissingParameterException;
 import com.farukcankaya.springcase.common.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +54,47 @@ public class CampaignServiceTest {
 
   @Test
   public void givenCampaign_whenAddCampaign_thenReturnCampaign() {
+    Campaign campaign =
+        new ProductCampaign(
+            null,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    Campaign savedCampaign =
+        new ProductCampaign(
+            1L,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    when(campaignRepositoryMock.save(campaign)).thenReturn(savedCampaign);
+
+    assertThat(campaignService.addCampaign(campaign)).isEqualTo(savedCampaign);
+  }
+
+  @Test(expected = MissingParameterException.class)
+  public void
+      givenRateCampaignWithMissingMaximumDiscountPrice_whenAddCampaign_thenThrowMissingParameterException() {
+    Campaign campaign =
+        new ProductCampaign(
+            null,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            null,
+            1L,
+            "Product #1");
+
+    campaignService.addCampaign(campaign);
+  }
+
+  @Test
+  public void givenRateCampaignWithMaximumDiscountPrice_whenAddCampaign_thenReturnCampaign() {
     Campaign campaign =
         new ProductCampaign(
             null,
