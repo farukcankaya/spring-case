@@ -3,7 +3,7 @@
 ## TODO
 - [ ] **Expectations**
   - [x] Campaign CRUD create/update/delete
-  - [ ] Discount calculation
+  - [x] Discount calculation
   - [ ] Swagger integration
 - [ ] **Bonus**
   - [ ] Admin panel to manage campaign
