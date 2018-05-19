@@ -17,6 +17,8 @@ public class CampaignService {
   }
 
   public List<Campaign> getAllCampaigns() {
-    return null;
+    List<Campaign> list = new ArrayList<>();
+    this.campaignRepository.findAll().forEach(campaign -> list.add(campaign));
+    return list;
   }
 }
