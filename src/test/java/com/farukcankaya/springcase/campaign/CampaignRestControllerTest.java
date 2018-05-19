@@ -5,6 +5,7 @@ import com.farukcankaya.springcase.campaign.entity.Campaign;
 import com.farukcankaya.springcase.campaign.entity.CategoryCampaign;
 import com.farukcankaya.springcase.campaign.entity.DiscountType;
 import com.farukcankaya.springcase.campaign.entity.ProductCampaign;
+import com.farukcankaya.springcase.common.NotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,6 +90,56 @@ public class CampaignRestControllerTest {
     // T
     RequestBuilder requestBuilder =
         MockMvcRequestBuilders.get("/campaigns").accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.OK.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
+
+  @Test
+  public void givenEmptyCampaign_whenCampaignsByIdInvoked_thenReturn404WithInformation()
+      throws Exception {
+    // G
+    long campaignId = 1;
+    NotFoundException notFoundException = new NotFoundException(Campaign.class);
+    String responseContent = "{\"messages\":[\"Campaign is not found\"]}";
+
+    // W
+    when(mockCampaignService.getCampaignById(campaignId)).thenThrow(notFoundException);
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/campaigns/" + campaignId).accept(MediaType.APPLICATION_JSON);
+    MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+    MockHttpServletResponse response = result.getResponse();
+
+    assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
+    assertEquals(responseContent, response.getContentAsString());
+  }
+
+  @Test
+  public void givenCampaign_whenCampaignsByIdInvoked_thenReturnCampaignJson() throws Exception {
+    // G
+    ProductCampaign productCampaign =
+        new ProductCampaign(
+            1L,
+            "Product Campaign",
+            DiscountType.RATE,
+            new BigDecimal(10),
+            new BigDecimal(80),
+            1L,
+            "Product #1");
+    String responseContent =
+        "{\"type\":\"product\",\"id\":1,\"name\":\"Product Campaign\",\"discountType\":\"RATE\",\"discountValue\":10,\"maximumDiscountPrice\":80,\"productId\":1,\"productName\":\"Product #1\"}";
+
+    // W
+    when(mockCampaignService.getCampaignById(productCampaign.getId())).thenReturn(productCampaign);
+
+    // T
+    RequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/campaigns/" + productCampaign.getId())
+            .accept(MediaType.APPLICATION_JSON);
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
     MockHttpServletResponse response = result.getResponse();
 
