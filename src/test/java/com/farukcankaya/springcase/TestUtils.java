@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TestUtils {
@@ -74,7 +75,7 @@ public class TestUtils {
         new CategoryCampaign(
             3L,
             "Kazaklar Daha Ucuz",
-            DiscountType.PRICE,
+            DiscountType.RATE,
             new BigDecimal(10),
             new BigDecimal(30),
             100L,
@@ -96,17 +97,14 @@ public class TestUtils {
         new Product(20L, 100L, new BigDecimal(500)));
   }
 
-  public static BigDecimal[] extractCalculatedDiscounts(List<Product> products) {
+  public static List<BigDecimal> extractCalculatedDiscounts(List<Product> products) {
     return products
         .stream()
         .map(product -> product.getDiscountedPrice())
-        .toArray(BigDecimal[]::new);
+        .collect(Collectors.toList());
   }
 
-  public static BigDecimal[] getCaseCalculatedDiscount() {
-    BigDecimal[] discountedPrices = {
-      new BigDecimal(30.99), new BigDecimal(190), new BigDecimal(470)
-    };
-    return discountedPrices;
+  public static List<BigDecimal> getCaseCalculatedDiscount() {
+    return Arrays.asList(new BigDecimal(30.99), new BigDecimal(190), new BigDecimal(470));
   }
 }

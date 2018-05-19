@@ -36,6 +36,7 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(value = CampaignRestController.class, secure = false)
 public class CampaignRestControllerTest {
   private static ObjectMapper mapper = new ObjectMapper();
+
   @Autowired private MockMvc mockMvc;
 
   @MockBean private CampaignService mockCampaignService;
