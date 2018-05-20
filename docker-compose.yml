@@ -1,0 +1,15 @@
+version: '2.2'
+services:
+  spring-case-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: spring-case-docker
+    ports:
+      - 8090
+    networks:
+      - network1
+    scale: 2
+
+networks:
+  network1:
